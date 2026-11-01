@@ -2,7 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Caixa Rápido - Vendas</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -15,16 +17,20 @@
     font-family: 'Inter', sans-serif;
   }
   
-  /* TRAVA ABSOLUTA DA TELA */
-  html, body {
-    position: fixed;
+  html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #E2E8F0;
+  }
+  
+  body {
+    position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden; 
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     background: #E2E8F0; 
     color: #1A202C;
   }
@@ -177,7 +183,7 @@
   }
   .roleta-container {
     position: relative;
-    height: 140px; /* Mais compacta */
+    height: 140px; 
     background: #F8FAFC;
     border-radius: 20px;
     overflow: hidden;
@@ -329,36 +335,38 @@
   }
 
   /* =========================================
-     RODAPÉ COM O TOTAL FIXO, GRANDE E ELEVADO 
+     RODAPÉ DO TOTAL - CORREÇÃO SAFE AREA
      ========================================= */
   .footer-total {
     background: #FFFFFF;
-    /* O padding-bottom de 40px eleva o botão para não ficar atrás da barra do tablet */
-    padding: 16px 20px 45px 20px; 
+    padding: 16px 20px;
+    /* Espaço extra + safe-area do sistema (barra de navegação) */
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
     border-top: 2px solid #F1F5F9;
     flex-shrink: 0; 
     border-radius: 0 0 24px 24px;
     z-index: 10;
   }
+  
   .total-geral {
     background: #059669; 
     color: #fff;
-    border-radius: 24px; /* Bordas bem arredondadas */
-    padding: 32px 28px; /* Botão GIGANTE */
+    border-radius: 20px; 
+    padding: 28px 24px; 
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 12px 25px rgba(5, 150, 105, 0.35);
   }
   .total-geral span { 
-    font-size: 1.3rem; 
+    font-size: 1.2rem; 
     font-weight: 800; 
     opacity: 0.9; 
     text-transform: uppercase; 
     letter-spacing: 1px;
   }
   .total-geral .valor { 
-    font-size: 3.8rem; /* Fonte GIGANTE */
+    font-size: 3.5rem; 
     font-weight: 800; 
     letter-spacing: -1.5px; 
     opacity: 1;
@@ -377,13 +385,16 @@
   .carrinho-vazio .icone { font-size: 4.5rem; margin-bottom: 16px; opacity: 0.5; }
   .carrinho-vazio p { font-size: 1.2rem; font-weight: 600; }
 
-  /* RESPONSIVIDADE */
+  /* RESPONSIVIDADE E CORREÇÃO NO TABLET EM PÉ */
   @media (max-width: 900px) {
     .app-container { flex-direction: column; }
     .col-esquerda { flex: 1; min-height: 55vh; }
     .col-direita { flex: 1; min-height: 45vh; }
-    /* No celular deitado o botão ainda sobe mais */
-    .footer-total { padding-bottom: 60px; } 
+    
+    .footer-total { 
+      /* Um pouco mais de margem em telas menores */
+      padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); 
+    } 
   }
 </style>
 </head>
@@ -391,7 +402,6 @@
 
 <div class="app-container">
   
-  <!-- LADO ESQUERDO -->
   <div class="col-esquerda">
     <div class="header-title">
       <div class="icone">🌱</div>
@@ -426,7 +436,6 @@
     </button>
   </div>
 
-  <!-- LADO DIREITO -->
   <div class="col-direita">
     <div class="header-carrinho">
       <h2>🛒 Conta Atual</h2>
@@ -435,7 +444,6 @@
 
     <div class="lista-itens" id="listaItens"></div>
 
-    <!-- TOTAL FIXO E ELEVADO -->
     <div class="footer-total">
       <div class="total-geral">
         <span>Total</span>
@@ -479,7 +487,7 @@
   let carrinho = [];
   let quantidadeAtual = 0;
   let valoresRoleta = [];
-  const ITEM_HEIGHT = 46; // Altura do item da roleta
+  const ITEM_HEIGHT = 46;
 
   function norm(txt) {
     return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
