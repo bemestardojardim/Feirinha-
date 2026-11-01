@@ -2,50 +2,71 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Calculadora com Roleta</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Calculadora Tablet - Vendas</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #2e7d32, #1b5e20);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 16px;
-  }
-  .card {
-    background: #fff;
+  
+  html, body {
+    height: 100%;
     width: 100%;
-    max-width: 460px;
-    border-radius: 18px;
-    box-shadow: 0 20px 50px rgba(0,0,0,.3);
-    overflow: hidden;
-    margin-bottom: 20px;
+    overflow: hidden; /* Impede a tela de rolar */
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #2e7d32;
   }
+
+  /* LAYOUT DE DUAS COLUNAS */
+  .app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* COLUNA ESQUERDA (Controles) */
+  .col-esquerda {
+    flex: 1.2;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-right: 4px solid #1b5e20;
+    overflow-y: auto; /* Só rola se a tela for muito pequena */
+  }
+
+  /* COLUNA DIREITA (Carrinho) */
+  .col-direita {
+    flex: 1;
+    background: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   header {
     background: #43a047;
     color: #fff;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
-  header h1 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
-  
-  .content { padding: 20px; }
+  header h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+
   label {
     display: block;
-    font-size: .85rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     color: #333;
-    margin: 14px 0 6px;
+    margin: 15px 0 8px;
   }
+
   input[type="text"] {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 1rem;
+    padding: 15px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    font-size: 1.2rem;
     background: #fff;
   }
   input[type="text"]:focus { outline: none; border-color: #43a047; }
@@ -60,209 +81,251 @@
     background: #fff;
     border: 2px solid #43a047;
     border-top: none;
-    border-radius: 0 0 10px 10px;
-    max-height: 260px;
+    border-radius: 0 0 12px 12px;
+    max-height: 300px;
     overflow-y: auto;
-    z-index: 10;
+    z-index: 100;
     display: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
   }
   .lista-sugestoes.show { display: block; }
   .sugestao {
-    padding: 12px 14px;
+    padding: 15px;
     cursor: pointer;
-    font-size: .9rem;
-    border-bottom: 1px solid #f0f0f0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
-    gap: 8px;
   }
   .sugestao:hover, .sugestao.ativa { background: #e8f5e9; }
-  .sugestao .preco { color: #2e7d32; font-weight: 700; white-space: nowrap; }
-  .sem-resultado { padding: 12px 14px; color: #999; font-size: .9rem; }
+  .sugestao .preco { color: #2e7d32; font-weight: 700; }
 
   .preco-box {
     background: #e8f5e9;
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-top: 8px;
-    font-size: .9rem;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1.1rem;
     color: #1b5e20;
-    font-weight: 600;
+    font-weight: 700;
     display: none;
+    text-align: center;
   }
 
-  /* ESTILO DA ROLETA (PICKER) */
+  /* ROLETA (PICKER) */
   .roleta-container {
     position: relative;
-    height: 150px;
+    height: 180px;
     margin-top: 10px;
-    background: #f9f9f9;
+    background: #f0f0f0;
     border-radius: 12px;
     overflow: hidden;
-    border: 2px solid #e0e0e0;
-    /* Máscara para dar o efeito de desaparecer nas bordas */
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
-    display: none; /* Escondido até selecionar produto */
+    border: 2px solid #ccc;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+    display: none;
   }
-  
-  /* A linha do meio que indica o valor selecionado */
   .roleta-marcador {
     position: absolute;
     top: 50%;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 50px;
     transform: translateY(-50%);
-    border-top: 1px solid #43a047;
-    border-bottom: 1px solid #43a047;
-    background: rgba(67, 160, 71, 0.1);
+    border-top: 2px solid #43a047;
+    border-bottom: 2px solid #43a047;
+    background: rgba(67, 160, 71, 0.15);
     pointer-events: none;
     z-index: 1;
   }
-
   .roleta-scroll {
     height: 100%;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-    padding-top: 55px; /* (150 - 40) / 2 */
-    padding-bottom: 55px;
+    scrollbar-width: none;
+    padding-top: 65px; /* (180 - 50) / 2 */
+    padding-bottom: 65px;
     position: relative;
     z-index: 2;
   }
-  .roleta-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-
+  .roleta-scroll::-webkit-scrollbar { display: none; }
   .roleta-item {
-    height: 40px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #999;
+    color: #888;
     scroll-snap-align: center;
-    transition: color 0.2s, font-size 0.2s;
   }
-  .roleta-item.selecionado {
-    color: #2e7d32;
-    font-size: 1.4rem;
-  }
+  .roleta-item.selecionado { color: #2e7d32; font-size: 1.8rem; }
 
-  /* Resultado */
   .result {
     background: #fff8e1;
     border: 2px dashed #43a047;
     border-radius: 12px;
-    padding: 16px;
-    margin-top: 18px;
+    padding: 15px;
+    margin-top: auto; /* Empurra para o fim da coluna */
     text-align: center;
   }
-  .result .label { font-size: .8rem; color: #888; }
-  .result .value { font-size: 2.2rem; font-weight: 800; color: #2e7d32; margin: 4px 0; }
-  .result .detail { font-size: .85rem; color: #555; }
+  .result .label { font-size: 0.9rem; color: #888; font-weight: bold;}
+  .result .value { font-size: 2.5rem; font-weight: 800; color: #2e7d32; margin: 5px 0; }
+  .result .detail { font-size: 1rem; color: #555; }
 
-  /* Botão Adicionar */
   .btn-adicionar {
     width: 100%;
-    padding: 16px;
-    margin-top: 16px;
+    padding: 20px;
+    margin-top: 15px;
     background: #1976d2;
     color: #fff;
     border: none;
     border-radius: 12px;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 700;
     cursor: pointer;
   }
   .btn-adicionar:active { background: #0d47a1; }
 
-  /* Carrinho */
-  .carrinho { margin-top: 24px; border-top: 2px solid #eee; padding-top: 16px; }
-  .carrinho h2 { font-size: 1rem; color: #333; margin-bottom: 10px; }
+  /* CARRINHO (COLUNA DIREITA) */
+  .header-carrinho {
+    background: #1b5e20;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btn-limpar {
+    background: #ef5350;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .lista-itens {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px;
+  }
+
   .item-lista {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem;
-    padding: 8px 0;
-    border-bottom: 1px dashed #eee;
-    color: #555;
     align-items: center;
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
-  .item-lista span { flex: 1; }
-  .btn-remover { background: none; border: none; color: #ef5350; font-size: 1.2rem; padding: 0 8px; }
+  .item-lista .info { flex: 1; }
+  .item-lista .nome { font-size: 1.1rem; font-weight: bold; color: #333; }
+  .item-lista .qtd { font-size: 0.9rem; color: #666; }
+  .item-lista .valor { font-size: 1.2rem; font-weight: 800; color: #2e7d32; margin: 0 15px; }
+  
+  .btn-remover {
+    background: #ffebee;
+    border: none;
+    color: #c62828;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
+  .footer-total {
+    background: #fff;
+    padding: 20px;
+    border-top: 2px solid #ddd;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+  }
   .total-geral {
     background: #2e7d32;
     color: #fff;
     border-radius: 12px;
-    padding: 18px;
-    margin-top: 16px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     font-weight: 700;
   }
-  .total-geral .valor { font-size: 1.8rem; }
+  .total-geral .valor { font-size: 2.8rem; }
 
-  .footer { text-align: center; font-size: .75rem; color: #999; padding: 12px; border-top: 1px solid #eee; }
+  /* Ajustes para telas menores (celular deitado) */
+  @media (max-width: 800px) {
+    .app-container { flex-direction: column; }
+    .col-esquerda { border-right: none; border-bottom: 4px solid #1b5e20; }
+    .col-direita { flex: 1; }
+  }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <header>
-    <h1>🌱 Calculadora de Vendas</h1>
-  </header>
+<div class="app-container">
+  
+  <!-- COLUNA ESQUERDA: Seleção de Produtos -->
+  <div class="col-esquerda">
+    <header>
+      <h1>🌱 Império Orgânico</h1>
+    </header>
 
-  <div class="content">
     <label>🔎 Digite o produto</label>
     <div class="busca-wrap">
-      <input type="text" id="busca" placeholder="Ex: c, b, ma..." autocomplete="off"
-             oninput="filtrar()" onfocus="filtrar()" onkeydown="navegar(event)">
+      <input type="text" id="busca" placeholder="Ex: couve, banana..." autocomplete="off"
+             oninput="filtrar()" onfocus="filtrar()">
       <div class="lista-sugestoes" id="sugestoes"></div>
     </div>
 
     <div class="preco-box" id="precoBox"></div>
 
-    <!-- A ROLETA AQUI -->
-    <div id="roletaWrap" style="margin-top: 14px;">
-      <label id="labelRoleta" style="text-align: center; display: block; margin-bottom: 0;">Selecione a quantidade</label>
-      
+    <div id="roletaWrap">
+      <label id="labelRoleta" style="text-align: center; display: block;">Selecione a quantidade</label>
       <div class="roleta-container" id="roletaContainer">
         <div class="roleta-marcador"></div>
-        <div class="roleta-scroll" id="roletaScroll" onscroll="roletaRolou()">
-          <!-- Os números entram via JavaScript -->
-        </div>
+        <div class="roleta-scroll" id="roletaScroll" onscroll="roletaRolou()"></div>
       </div>
     </div>
 
     <div class="result">
-      <div class="label">SUBTOTAL DESTE ITEM</div>
+      <div class="label">SUBTOTAL</div>
       <div class="value" id="subtotal">R$ 0,00</div>
-      <div class="detail" id="detalhe">Selecione o produto</div>
+      <div class="detail" id="detalhe">Aguardando produto...</div>
     </div>
 
     <button class="btn-adicionar" onclick="adicionarNaLista()">➕ Adicionar à Conta</button>
+  </div>
 
-    <div class="carrinho">
-      <h2>Itens Adicionados:</h2>
-      <div id="listaItens">
-        <div style="font-size: 0.85rem; color: #999; text-align: center; padding: 10px 0;">Nenhum item adicionado ainda.</div>
+  <!-- COLUNA DIREITA: Lista e Total -->
+  <div class="col-direita">
+    <div class="header-carrinho">
+      <span>🛒 Itens na Conta</span>
+      <button class="btn-limpar" onclick="limparTudo()">Limpar Tudo</button>
+    </div>
+
+    <div class="lista-itens" id="listaItens">
+      <div style="text-align: center; color: #999; margin-top: 50px; font-size: 1.2rem;">
+        Nenhum item na conta ainda.
       </div>
-      
+    </div>
+
+    <div class="footer-total">
       <div class="total-geral">
         <span>TOTAL:</span>
         <span class="valor" id="totalGeral">R$ 0,00</span>
       </div>
     </div>
-
   </div>
 
-  <div class="footer">Calculadora Rápida</div>
 </div>
 
 <script>
@@ -295,12 +358,10 @@
   ];
 
   let produtoSelecionado = null;
-  let indiceAtivo = -1;
   let carrinho = [];
-  
   let quantidadeAtual = 0;
   let valoresRoleta = [];
-  const ITEM_HEIGHT = 40; // Altura de cada número na roleta
+  const ITEM_HEIGHT = 50; // Altura do item na roleta
 
   function norm(txt) {
     return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -309,19 +370,18 @@
   function filtrar() {
     const termo = norm(document.getElementById('busca').value.trim());
     const lista = document.getElementById('sugestoes');
-    indiceAtivo = -1;
 
     if (termo === '') { lista.classList.remove('show'); lista.innerHTML = ''; return; }
 
     const encontrados = produtos.filter(p => norm(p.nome).includes(termo));
 
     if (encontrados.length === 0) {
-      lista.innerHTML = `<div class="sem-resultado">Nenhum produto encontrado 😕</div>`;
+      lista.innerHTML = `<div style="padding: 15px; color: #999;">Nenhum produto encontrado 😕</div>`;
       lista.classList.add('show');
       return;
     }
 
-    lista.innerHTML = encontrados.map((p, i) => `
+    lista.innerHTML = encontrados.map((p) => `
       <div class="sugestao" onclick="selecionar(${produtos.indexOf(p)})">
         <span>${p.emoji} ${p.nome}</span>
         <span class="preco">R$ ${p.preco.toFixed(2)}/${p.tipo}</span>
@@ -344,55 +404,48 @@
       box.textContent = `💰 ${produtoSelecionado.nome}: R$ ${produtoSelecionado.preco.toFixed(2)} por Kg`;
       labelRoleta.textContent = 'Peso na balança (Kg)';
       
-      // Cria a roleta de 0.100 até 10.000 (100g a 10kg)
       valoresRoleta = [];
       for (let i = 100; i <= 10000; i += 100) {
         valoresRoleta.push((i / 1000).toFixed(3));
       }
-      quantidadeAtual = 1.000; // Padrão 1kg
+      quantidadeAtual = 1.000;
     } else {
       box.textContent = `💰 ${produtoSelecionado.nome}: R$ ${produtoSelecionado.preco.toFixed(2)} por unidade`;
       labelRoleta.textContent = 'Quantidade (unidades)';
       
-      // Cria a roleta de 1 até 50
       valoresRoleta = [];
       for (let i = 1; i <= 50; i++) {
         valoresRoleta.push(i.toString());
       }
-      quantidadeAtual = 1; // Padrão 1 un
+      quantidadeAtual = 1;
     }
 
     box.style.display = 'block';
     roletaContainer.style.display = 'block';
 
-    // Popula a roleta
     roletaScroll.innerHTML = valoresRoleta.map(v => `<div class="roleta-item">${v}</div>`).join('');
     
-    // Rola até o valor padrão
     setTimeout(() => {
-      const indexPadrao = valoresRoleta.indexOf(quantidadeAtual.toString()) !== -1 
-        ? valoresRoleta.indexOf(quantidadeAtual.toString()) 
-        : valoresRoleta.indexOf(quantidadeAtual.toFixed(3));
+      let indexPadrao = valoresRoleta.indexOf(quantidadeAtual.toString());
+      if(indexPadrao === -1) indexPadrao = valoresRoleta.indexOf(quantidadeAtual.toFixed(3));
       
       roletaScroll.scrollTop = indexPadrao * ITEM_HEIGHT;
-      roletaRolou(); // Atualiza a cor e faz o cálculo
+      roletaRolou();
     }, 50);
   }
 
-  // FUNÇÃO QUE DETECTA QUANDO A ROLETA PARA DE ROLAR
   let scrollTimeout;
   function roletaRolou() {
     const roletaScroll = document.getElementById('roletaScroll');
     const itens = document.querySelectorAll('.roleta-item');
+    if(!itens.length) return;
     
-    // Efeito visual (destacar o número do meio)
     const indexAproximado = Math.round(roletaScroll.scrollTop / ITEM_HEIGHT);
     itens.forEach((item, i) => {
       if (i === indexAproximado) item.classList.add('selecionado');
       else item.classList.remove('selecionado');
     });
 
-    // Aguarda o usuário parar de rolar para calcular
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
       const indexExato = Math.round(roletaScroll.scrollTop / ITEM_HEIGHT);
@@ -403,69 +456,27 @@
     }, 100);
   }
 
-  function navegar(e) {
-    const lista = document.getElementById('sugestoes');
-    const itens = lista.querySelectorAll('.sugestao');
-    if (!itens.length) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      indiceAtivo = (indiceAtivo + 1) % itens.length;
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      indiceAtivo = (indiceAtivo - 1 + itens.length) % itens.length;
-    } else if (e.key === 'Enter' && indiceAtivo >= 0) {
-      e.preventDefault();
-      itens[indiceAtivo].click();
-      return;
-    } else if (e.key === 'Escape') {
-      lista.classList.remove('show');
-      return;
-    } else {
-      return;
-    }
-    itens.forEach((el, i) => el.classList.toggle('ativa', i === indiceAtivo));
-    itens[indiceAtivo].scrollIntoView({ block: 'nearest' });
-  }
-
   function calcular() {
     const subtotalEl = document.getElementById('subtotal');
     const detalheEl = document.getElementById('detalhe');
 
-    if (!produtoSelecionado) {
-      subtotalEl.textContent = 'R$ 0,00';
-      detalheEl.textContent = 'Digite o produto';
-      return;
-    }
+    if (!produtoSelecionado) return;
 
     const subtotal = produtoSelecionado.preco * quantidadeAtual;
-
     subtotalEl.textContent = subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    if (subtotal > 0) {
-      const un = produtoSelecionado.tipo === 'kg' ? 'kg' : 'un';
-      const qtdExibicao = produtoSelecionado.tipo === 'kg' ? quantidadeAtual.toFixed(3) : quantidadeAtual;
-      detalheEl.textContent = `${qtdExibicao} ${un} × R$ ${produtoSelecionado.preco.toFixed(2)}`;
-    } else {
-      detalheEl.textContent = 'Informe o peso/quantidade';
-    }
+    const un = produtoSelecionado.tipo === 'kg' ? 'kg' : 'un';
+    const qtdExibicao = produtoSelecionado.tipo === 'kg' ? quantidadeAtual.toFixed(3) : quantidadeAtual;
+    detalheEl.textContent = `${qtdExibicao} ${un} × R$ ${produtoSelecionado.preco.toFixed(2)}`;
   }
 
   function adicionarNaLista() {
-    if (!produtoSelecionado) {
-      alert('Por favor, selecione um produto primeiro!');
-      return;
-    }
-
-    if (quantidadeAtual <= 0) {
-      alert('Informe o peso ou a quantidade antes de adicionar.');
-      return;
-    }
+    if (!produtoSelecionado) { alert('Selecione um produto primeiro!'); return; }
+    if (quantidadeAtual <= 0) { alert('Selecione a quantidade.'); return; }
 
     const novoItem = {
       id: Date.now(),
       nome: produtoSelecionado.nome,
-      preco: produtoSelecionado.preco,
       tipo: produtoSelecionado.tipo,
       qtd: quantidadeAtual,
       total: produtoSelecionado.preco * quantidadeAtual
@@ -473,13 +484,13 @@
     
     carrinho.push(novoItem);
     
-    // Limpa a tela para o próximo item
+    // Limpa a tela
     produtoSelecionado = null;
     document.getElementById('busca').value = '';
     document.getElementById('precoBox').style.display = 'none';
     document.getElementById('roletaContainer').style.display = 'none';
     document.getElementById('subtotal').textContent = 'R$ 0,00';
-    document.getElementById('detalhe').textContent = 'Selecione o produto';
+    document.getElementById('detalhe').textContent = 'Aguardando produto...';
     document.getElementById('busca').focus();
 
     atualizarCarrinho();
@@ -490,26 +501,40 @@
     atualizarCarrinho();
   }
 
+  function limparTudo() {
+    if(carrinho.length > 0 && confirm("Deseja realmente apagar todos os itens da conta?")) {
+      carrinho = [];
+      atualizarCarrinho();
+    }
+  }
+
   function atualizarCarrinho() {
     const listaContainer = document.getElementById('listaItens');
     const totalGeralEl = document.getElementById('totalGeral');
     
     if (carrinho.length === 0) {
-      listaContainer.innerHTML = `<div style="font-size: 0.85rem; color: #999; text-align: center; padding: 10px 0;">Nenhum item adicionado ainda.</div>`;
+      listaContainer.innerHTML = `<div style="text-align: center; color: #999; margin-top: 50px; font-size: 1.2rem;">Nenhum item na conta ainda.</div>`;
       totalGeralEl.textContent = 'R$ 0,00';
       return;
     }
 
     let totalGeral = 0;
-    listaContainer.innerHTML = carrinho.map(item => {
+    
+    // Inverte a ordem para o último item adicionado ficar no topo
+    const carrinhoInvertido = [...carrinho].reverse();
+
+    listaContainer.innerHTML = carrinhoInvertido.map(item => {
       totalGeral += item.total;
       const un = item.tipo === 'kg' ? 'kg' : 'un';
       const qtdFormatada = item.tipo === 'kg' ? item.qtd.toFixed(3) : item.qtd;
       
       return `
         <div class="item-lista">
-          <span><strong>${qtdFormatada}${un}</strong> ${item.nome}</span>
-          <span style="color:#2e7d32; font-weight:bold;">R$ ${item.total.toFixed(2).replace('.', ',')}</span>
+          <div class="info">
+            <div class="nome">${item.nome}</div>
+            <div class="qtd">${qtdFormatada} ${un}</div>
+          </div>
+          <div class="valor">R$ ${item.total.toFixed(2).replace('.', ',')}</div>
           <button class="btn-remover" onclick="removerItem(${item.id})">✕</button>
         </div>
       `;
