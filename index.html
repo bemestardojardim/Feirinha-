@@ -3,124 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Calculadora Tablet - Vendas</title>
+<title>Caixa Rápido - Vendas</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  /* IMPORTAÇÃO DE FONTE MODERNA */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    -webkit-tap-highlight-color: transparent; 
+    font-family: 'Inter', sans-serif;
+  }
   
   html, body {
     height: 100%;
     width: 100%;
-    overflow: hidden; /* Impede a tela de rolar */
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #2e7d32;
+    overflow: hidden; /* Trava a tela inteira */
+    background: #E8ECEF;
+    color: #1A202C;
   }
 
-  /* LAYOUT DE DUAS COLUNAS */
+  /* LAYOUT PRINCIPAL */
   .app-container {
     display: flex;
     height: 100vh;
     width: 100vw;
+    padding: 16px;
+    gap: 16px;
   }
 
-  /* COLUNA ESQUERDA (Controles) */
+  /* ÁREA ESQUERDA (CONTROLES) */
   .col-esquerda {
-    flex: 1.2;
-    background: #fff;
+    flex: 1.1;
+    background: #FFFFFF;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    border-right: 4px solid #1b5e20;
-    overflow-y: auto; /* Só rola se a tela for muito pequena */
+    padding: 24px;
+    position: relative;
   }
 
-  /* COLUNA DIREITA (Carrinho) */
+  /* ÁREA DIREITA (CARRINHO) */
   .col-direita {
-    flex: 1;
-    background: #f5f5f5;
+    flex: 0.9;
+    background: #FFFFFF;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    height: 100%;
+    overflow: hidden;
   }
 
-  header {
-    background: #43a047;
-    color: #fff;
-    padding: 15px;
-    text-align: center;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  /* CABEÇALHO */
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
   }
-  header h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+  .header-title .icone {
+    width: 48px;
+    height: 48px;
+    background: #E6F4EA;
+    color: #1E8E3E;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  .header-title h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1A202C;
+    letter-spacing: -0.5px;
+  }
 
   label {
     display: block;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #333;
-    margin: 15px 0 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4A5568;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
+  /* CAMPO DE BUSCA */
+  .busca-wrap { position: relative; }
   input[type="text"] {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #ccc;
-    border-radius: 12px;
+    padding: 18px 20px;
+    border: 2px solid #E2E8F0;
+    border-radius: 16px;
     font-size: 1.2rem;
-    background: #fff;
+    font-weight: 500;
+    background: #F8FAFC;
+    color: #1A202C;
+    transition: all 0.2s ease;
   }
-  input[type="text"]:focus { outline: none; border-color: #43a047; }
+  input[type="text"]:focus { 
+    outline: none; 
+    border-color: #2E7D32;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
+  }
 
-  /* Busca de produtos */
-  .busca-wrap { position: relative; }
+  /* LISTA DE SUGESTÕES */
   .lista-sugestoes {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 8px);
     left: 0;
     right: 0;
-    background: #fff;
-    border: 2px solid #43a047;
-    border-top: none;
-    border-radius: 0 0 12px 12px;
-    max-height: 300px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    max-height: 350px;
     overflow-y: auto;
     z-index: 100;
     display: none;
-    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,.15);
+    border: 1px solid #E2E8F0;
   }
   .lista-sugestoes.show { display: block; }
   .sugestao {
-    padding: 15px;
+    padding: 16px 20px;
     cursor: pointer;
     font-size: 1.1rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #EDF2F7;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    transition: background 0.15s;
   }
-  .sugestao:hover, .sugestao.ativa { background: #e8f5e9; }
-  .sugestao .preco { color: #2e7d32; font-weight: 700; }
+  .sugestao:last-child { border-bottom: none; }
+  .sugestao:hover, .sugestao.ativa { background: #F0FDF4; }
+  .sugestao .nome-prod { font-weight: 600; color: #2D3748; }
+  .sugestao .preco-tag { 
+    color: #1E8E3E; 
+    font-weight: 700; 
+    background: #E6F4EA;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
 
+  /* CAIXA DE PREÇO DO PRODUTO SELECIONADO */
   .preco-box {
-    background: #e8f5e9;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
     border-radius: 12px;
-    padding: 12px;
-    margin-top: 10px;
+    padding: 14px;
+    margin-top: 16px;
     font-size: 1.1rem;
-    color: #1b5e20;
-    font-weight: 700;
+    color: #166534;
+    font-weight: 600;
     display: none;
     text-align: center;
   }
 
-  /* ROLETA (PICKER) */
+  /* ROLETA PREMIUM */
+  .roleta-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 16px;
+  }
   .roleta-container {
     position: relative;
-    height: 180px;
-    margin-top: 10px;
-    background: #f0f0f0;
-    border-radius: 12px;
+    height: 220px;
+    background: #F8FAFC;
+    border-radius: 20px;
     overflow: hidden;
-    border: 2px solid #ccc;
+    border: 2px solid #E2E8F0;
     -webkit-mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
     mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
     display: none;
@@ -128,13 +185,14 @@
   .roleta-marcador {
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
-    height: 50px;
+    left: 10px;
+    right: 10px;
+    height: 60px;
     transform: translateY(-50%);
-    border-top: 2px solid #43a047;
-    border-bottom: 2px solid #43a047;
-    background: rgba(67, 160, 71, 0.15);
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 2px solid #2E7D32;
     pointer-events: none;
     z-index: 1;
   }
@@ -143,129 +201,196 @@
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scrollbar-width: none;
-    padding-top: 65px; /* (180 - 50) / 2 */
-    padding-bottom: 65px;
+    padding-top: 80px; /* (220 - 60) / 2 */
+    padding-bottom: 80px;
     position: relative;
     z-index: 2;
   }
   .roleta-scroll::-webkit-scrollbar { display: none; }
   .roleta-item {
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 600;
-    color: #888;
+    color: #A0AEC0;
     scroll-snap-align: center;
+    transition: all 0.2s ease;
   }
-  .roleta-item.selecionado { color: #2e7d32; font-size: 1.8rem; }
+  .roleta-item.selecionado { 
+    color: #1E8E3E; 
+    font-size: 2rem; 
+    font-weight: 800;
+  }
 
+  /* SUBTOTAL E BOTÃO ADICIONAR */
   .result {
-    background: #fff8e1;
-    border: 2px dashed #43a047;
-    border-radius: 12px;
-    padding: 15px;
-    margin-top: auto; /* Empurra para o fim da coluna */
+    background: #F8FAFC;
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: auto;
     text-align: center;
+    border: 1px solid #E2E8F0;
   }
-  .result .label { font-size: 0.9rem; color: #888; font-weight: bold;}
-  .result .value { font-size: 2.5rem; font-weight: 800; color: #2e7d32; margin: 5px 0; }
-  .result .detail { font-size: 1rem; color: #555; }
+  .result .label { 
+    font-size: 0.85rem; 
+    color: #718096; 
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .result .value { 
+    font-size: 3rem; 
+    font-weight: 800; 
+    color: #1A202C; 
+    margin: 4px 0; 
+    letter-spacing: -1px;
+  }
+  .result .detail { font-size: 0.95rem; color: #718096; font-weight: 500;}
 
   .btn-adicionar {
     width: 100%;
-    padding: 20px;
-    margin-top: 15px;
-    background: #1976d2;
+    padding: 22px;
+    margin-top: 16px;
+    background: #2E7D32;
     color: #fff;
     border: none;
-    border-radius: 12px;
+    border-radius: 16px;
     font-size: 1.3rem;
     font-weight: 700;
     cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
   }
-  .btn-adicionar:active { background: #0d47a1; }
+  .btn-adicionar:active { 
+    background: #1B5E20; 
+    transform: scale(0.98);
+  }
 
-  /* CARRINHO (COLUNA DIREITA) */
+  /* CARRINHO (LADO DIREITO) */
   .header-carrinho {
-    background: #1b5e20;
-    color: #fff;
-    padding: 15px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
+    background: #FFFFFF;
+    padding: 24px;
+    border-bottom: 2px solid #EDF2F7;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+  .header-carrinho h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2D3748;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
   .btn-limpar {
-    background: #ef5350;
-    color: #fff;
+    background: #FEE2E2;
+    color: #DC2626;
     border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-weight: bold;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
+    transition: background 0.2s;
   }
+  .btn-limpar:active { background: #FECACA; }
 
   .lista-itens {
     flex: 1;
     overflow-y: auto;
-    padding: 10px 20px;
+    padding: 16px 24px;
+    background: #F8FAFC;
   }
+  .lista-itens::-webkit-scrollbar { width: 6px; }
+  .lista-itens::-webkit-scrollbar-thumb { background: #CBD5E0; border-radius: 10px; }
 
   .item-lista {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background: #FFFFFF;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid #EDF2F7;
+    animation: slideIn 0.3s ease-out;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
   }
   .item-lista .info { flex: 1; }
-  .item-lista .nome { font-size: 1.1rem; font-weight: bold; color: #333; }
-  .item-lista .qtd { font-size: 0.9rem; color: #666; }
-  .item-lista .valor { font-size: 1.2rem; font-weight: 800; color: #2e7d32; margin: 0 15px; }
+  .item-lista .nome { font-size: 1.1rem; font-weight: 700; color: #1A202C; margin-bottom: 4px;}
+  .item-lista .qtd { 
+    font-size: 0.9rem; 
+    color: #4A5568; 
+    font-weight: 600;
+    background: #EDF2F7;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .item-lista .valor { font-size: 1.3rem; font-weight: 800; color: #1E8E3E; margin: 0 16px; }
   
   .btn-remover {
-    background: #ffebee;
+    background: #FEE2E2;
     border: none;
-    color: #c62828;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    color: #DC2626;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
   }
+  .btn-remover:active { background: #FCA5A5; transform: scale(0.95); }
 
   .footer-total {
-    background: #fff;
-    padding: 20px;
-    border-top: 2px solid #ddd;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    background: #FFFFFF;
+    padding: 24px;
+    border-top: 1px solid #E2E8F0;
   }
   .total-geral {
-    background: #2e7d32;
+    background: linear-gradient(135deg, #1E8E3E, #166534);
     color: #fff;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 20px;
+    padding: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.5rem;
-    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(22, 101, 52, 0.2);
   }
-  .total-geral .valor { font-size: 2.8rem; }
+  .total-geral span { font-size: 1.2rem; font-weight: 600; opacity: 0.9; }
+  .total-geral .valor { font-size: 3rem; font-weight: 800; letter-spacing: -1px; opacity: 1;}
 
-  /* Ajustes para telas menores (celular deitado) */
-  @media (max-width: 800px) {
+  /* ESTADO VAZIO */
+  .carrinho-vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #A0AEC0;
+  }
+  .carrinho-vazio .icone { font-size: 4rem; margin-bottom: 16px; opacity: 0.5; }
+  .carrinho-vazio p { font-size: 1.2rem; font-weight: 500; }
+
+  /* RESPONSIVIDADE PARA TABLET EM PÉ */
+  @media (max-width: 900px) {
     .app-container { flex-direction: column; }
-    .col-esquerda { border-right: none; border-bottom: 4px solid #1b5e20; }
-    .col-direita { flex: 1; }
+    .col-esquerda { flex: 1.2; }
+    .col-direita { flex: 0.8; }
   }
 </style>
 </head>
@@ -273,23 +398,25 @@
 
 <div class="app-container">
   
-  <!-- COLUNA ESQUERDA: Seleção de Produtos -->
+  <!-- LADO ESQUERDO: ADICIONAR PRODUTOS -->
   <div class="col-esquerda">
-    <header>
-      <h1>🌱 Império Orgânico</h1>
-    </header>
+    
+    <div class="header-title">
+      <div class="icone">🌱</div>
+      <h1>Caixa Rápido</h1>
+    </div>
 
-    <label>🔎 Digite o produto</label>
+    <label>Buscar Produto</label>
     <div class="busca-wrap">
-      <input type="text" id="busca" placeholder="Ex: couve, banana..." autocomplete="off"
+      <input type="text" id="busca" placeholder="Digite o nome (ex: couve, banana...)" autocomplete="off"
              oninput="filtrar()" onfocus="filtrar()">
       <div class="lista-sugestoes" id="sugestoes"></div>
     </div>
 
     <div class="preco-box" id="precoBox"></div>
 
-    <div id="roletaWrap">
-      <label id="labelRoleta" style="text-align: center; display: block;">Selecione a quantidade</label>
+    <div class="roleta-section" id="roletaWrap">
+      <label id="labelRoleta" style="text-align: center;">Deslize para escolher</label>
       <div class="roleta-container" id="roletaContainer">
         <div class="roleta-marcador"></div>
         <div class="roleta-scroll" id="roletaScroll" onscroll="roletaRolou()"></div>
@@ -297,30 +424,30 @@
     </div>
 
     <div class="result">
-      <div class="label">SUBTOTAL</div>
+      <div class="label">SUBTOTAL DO ITEM</div>
       <div class="value" id="subtotal">R$ 0,00</div>
       <div class="detail" id="detalhe">Aguardando produto...</div>
     </div>
 
-    <button class="btn-adicionar" onclick="adicionarNaLista()">➕ Adicionar à Conta</button>
+    <button class="btn-adicionar" onclick="adicionarNaLista()">
+      <span>➕</span> Adicionar à Conta
+    </button>
   </div>
 
-  <!-- COLUNA DIREITA: Lista e Total -->
+  <!-- LADO DIREITO: LISTA DE COMPRAS -->
   <div class="col-direita">
     <div class="header-carrinho">
-      <span>🛒 Itens na Conta</span>
-      <button class="btn-limpar" onclick="limparTudo()">Limpar Tudo</button>
+      <h2>🛒 Conta Atual</h2>
+      <button class="btn-limpar" onclick="limparTudo()">Limpar</button>
     </div>
 
     <div class="lista-itens" id="listaItens">
-      <div style="text-align: center; color: #999; margin-top: 50px; font-size: 1.2rem;">
-        Nenhum item na conta ainda.
-      </div>
+      <!-- Os itens vão aparecer aqui -->
     </div>
 
     <div class="footer-total">
       <div class="total-geral">
-        <span>TOTAL:</span>
+        <span>TOTAL</span>
         <span class="valor" id="totalGeral">R$ 0,00</span>
       </div>
     </div>
@@ -329,6 +456,7 @@
 </div>
 
 <script>
+  // LISTA DE PRODUTOS
   const produtos = [
     { nome: "Alface crespa/americana", preco: 3.50, tipo: "un", emoji: "🥗" },
     { nome: "Cebolinha", preco: 4.00, tipo: "un", emoji: "🌿" },
@@ -361,7 +489,7 @@
   let carrinho = [];
   let quantidadeAtual = 0;
   let valoresRoleta = [];
-  const ITEM_HEIGHT = 50; // Altura do item na roleta
+  const ITEM_HEIGHT = 60;
 
   function norm(txt) {
     return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -371,20 +499,20 @@
     const termo = norm(document.getElementById('busca').value.trim());
     const lista = document.getElementById('sugestoes');
 
-    if (termo === '') { lista.classList.remove('show'); lista.innerHTML = ''; return; }
+    if (termo === '') { lista.classList.remove('show'); return; }
 
     const encontrados = produtos.filter(p => norm(p.nome).includes(termo));
 
     if (encontrados.length === 0) {
-      lista.innerHTML = `<div style="padding: 15px; color: #999;">Nenhum produto encontrado 😕</div>`;
+      lista.innerHTML = `<div style="padding: 20px; color: #A0AEC0; text-align:center;">Nenhum produto encontrado 😕</div>`;
       lista.classList.add('show');
       return;
     }
 
     lista.innerHTML = encontrados.map((p) => `
       <div class="sugestao" onclick="selecionar(${produtos.indexOf(p)})">
-        <span>${p.emoji} ${p.nome}</span>
-        <span class="preco">R$ ${p.preco.toFixed(2)}/${p.tipo}</span>
+        <span class="nome-prod">${p.emoji} ${p.nome}</span>
+        <span class="preco-tag">R$ ${p.preco.toFixed(2)}/${p.tipo}</span>
       </div>
     `).join('');
     lista.classList.add('show');
@@ -401,8 +529,8 @@
     const roletaScroll = document.getElementById('roletaScroll');
 
     if (produtoSelecionado.tipo === 'kg') {
-      box.textContent = `💰 ${produtoSelecionado.nome}: R$ ${produtoSelecionado.preco.toFixed(2)} por Kg`;
-      labelRoleta.textContent = 'Peso na balança (Kg)';
+      box.innerHTML = `⚖️ <b>${produtoSelecionado.nome}</b> — R$ ${produtoSelecionado.preco.toFixed(2)}/Kg`;
+      labelRoleta.textContent = 'Peso na Balança (Kg)';
       
       valoresRoleta = [];
       for (let i = 100; i <= 10000; i += 100) {
@@ -410,8 +538,8 @@
       }
       quantidadeAtual = 1.000;
     } else {
-      box.textContent = `💰 ${produtoSelecionado.nome}: R$ ${produtoSelecionado.preco.toFixed(2)} por unidade`;
-      labelRoleta.textContent = 'Quantidade (unidades)';
+      box.innerHTML = `📦 <b>${produtoSelecionado.nome}</b> — R$ ${produtoSelecionado.preco.toFixed(2)}/Un`;
+      labelRoleta.textContent = 'Quantidade (Unidades)';
       
       valoresRoleta = [];
       for (let i = 1; i <= 50; i++) {
@@ -471,8 +599,8 @@
   }
 
   function adicionarNaLista() {
-    if (!produtoSelecionado) { alert('Selecione um produto primeiro!'); return; }
-    if (quantidadeAtual <= 0) { alert('Selecione a quantidade.'); return; }
+    if (!produtoSelecionado) { return; }
+    if (quantidadeAtual <= 0) { return; }
 
     const novoItem = {
       id: Date.now(),
@@ -484,7 +612,6 @@
     
     carrinho.push(novoItem);
     
-    // Limpa a tela
     produtoSelecionado = null;
     document.getElementById('busca').value = '';
     document.getElementById('precoBox').style.display = 'none';
@@ -502,9 +629,11 @@
   }
 
   function limparTudo() {
-    if(carrinho.length > 0 && confirm("Deseja realmente apagar todos os itens da conta?")) {
-      carrinho = [];
-      atualizarCarrinho();
+    if(carrinho.length > 0) {
+      if(confirm("Deseja apagar todos os itens da conta?")) {
+        carrinho = [];
+        atualizarCarrinho();
+      }
     }
   }
 
@@ -513,14 +642,16 @@
     const totalGeralEl = document.getElementById('totalGeral');
     
     if (carrinho.length === 0) {
-      listaContainer.innerHTML = `<div style="text-align: center; color: #999; margin-top: 50px; font-size: 1.2rem;">Nenhum item na conta ainda.</div>`;
+      listaContainer.innerHTML = `
+        <div class="carrinho-vazio">
+          <div class="icone">🛒</div>
+          <p>Nenhum item na conta</p>
+        </div>`;
       totalGeralEl.textContent = 'R$ 0,00';
       return;
     }
 
     let totalGeral = 0;
-    
-    // Inverte a ordem para o último item adicionado ficar no topo
     const carrinhoInvertido = [...carrinho].reverse();
 
     listaContainer.innerHTML = carrinhoInvertido.map(item => {
