@@ -25,7 +25,7 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden; 
-    background: #E2E8F0; /* Fundo cinza elegante */
+    background: #E2E8F0; 
     color: #1A202C;
   }
 
@@ -47,7 +47,8 @@
     display: flex;
     flex-direction: column;
     padding: 24px;
-    overflow-y: auto; /* Rola apenas se necessário */
+    padding-bottom: 16px;
+    overflow-y: auto;
   }
 
   /* ÁREA DIREITA (CARRINHO) */
@@ -66,13 +67,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
   .header-title .icone {
     width: 48px;
     height: 48px;
-    background: #ECFDF5; /* Verde bem claro */
-    color: #059669; /* Verde esmeralda */
+    background: #ECFDF5; 
+    color: #059669; 
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -90,7 +91,7 @@
     display: block;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #64748B; /* Cinza */
+    color: #64748B; 
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -100,10 +101,10 @@
   .busca-wrap { position: relative; }
   input[type="text"] {
     width: 100%;
-    padding: 24px 24px; /* Muito maior para tablet */
+    padding: 22px 24px; 
     border: 2px solid #CBD5E1;
     border-radius: 20px;
-    font-size: 1.5rem; /* Fonte grande */
+    font-size: 1.4rem; 
     font-weight: 600;
     background: #F8FAFC;
     color: #1A202C;
@@ -133,9 +134,9 @@
   }
   .lista-sugestoes.show { display: block; }
   .sugestao {
-    padding: 20px 24px;
+    padding: 18px 24px;
     cursor: pointer;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     border-bottom: 1px solid #F1F5F9;
     display: flex;
     justify-content: space-between;
@@ -149,34 +150,34 @@
     color: #047857; 
     font-weight: 800; 
     background: #D1FAE5;
-    padding: 8px 16px;
-    border-radius: 12px;
-    font-size: 1.1rem;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 1rem;
   }
 
-  /* CAIXA DE PREÇO DO PRODUTO SELECIONADO */
+  /* CAIXA DE PREÇO DO PRODUTO */
   .preco-box {
     background: #ECFDF5;
     border: 2px solid #A7F3D0;
     border-radius: 16px;
-    padding: 16px;
-    margin-top: 16px;
-    font-size: 1.2rem;
+    padding: 14px;
+    margin-top: 14px;
+    font-size: 1.1rem;
     color: #065F46;
     font-weight: 700;
     display: none;
     text-align: center;
   }
 
-  /* ROLETA (DIMINUÍDA) */
+  /* ROLETA */
   .roleta-section {
-    margin-top: 20px;
+    margin-top: 16px;
     display: flex;
     flex-direction: column;
   }
   .roleta-container {
     position: relative;
-    height: 160px; /* Menor que antes */
+    height: 140px; /* Mais compacta */
     background: #F8FAFC;
     border-radius: 20px;
     overflow: hidden;
@@ -190,7 +191,7 @@
     top: 50%;
     left: 10px;
     right: 10px;
-    height: 50px; /* Altura do item */
+    height: 46px; 
     transform: translateY(-50%);
     background: #FFFFFF;
     border-radius: 12px;
@@ -204,52 +205,52 @@
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scrollbar-width: none;
-    padding-top: 55px; /* (160 - 50) / 2 */
-    padding-bottom: 55px;
+    padding-top: 47px; 
+    padding-bottom: 47px;
     position: relative;
     z-index: 2;
   }
   .roleta-scroll::-webkit-scrollbar { display: none; }
   .roleta-item {
-    height: 50px; /* Altura do item */
+    height: 46px; 
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 600;
-    color: #94A3B8; /* Cinza claro */
+    color: #94A3B8;
     scroll-snap-align: center;
     transition: all 0.2s ease;
   }
   .roleta-item.selecionado { 
-    color: #059669; /* Verde */
-    font-size: 2rem; 
+    color: #059669; 
+    font-size: 1.8rem; 
     font-weight: 800;
   }
 
-  /* SUBTOTAL GIGANTE */
+  /* SUBTOTAL */
   .result {
     background: #F8FAFC;
     border-radius: 20px;
-    padding: 24px;
-    margin-top: auto; /* Empurra para o fim da coluna se sobrar espaço */
-    margin-bottom: 20px;
+    padding: 20px;
+    margin-top: auto; 
+    margin-bottom: 16px;
     text-align: center;
     border: 2px solid #E2E8F0;
   }
-  .result .label { font-size: 0.9rem; color: #64748B; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px;}
-  .result .value { font-size: 4rem; font-weight: 800; color: #059669; margin: 0; letter-spacing: -1px; line-height: 1;}
-  .result .detail { font-size: 1.1rem; color: #64748B; font-weight: 600; margin-top: 8px;}
+  .result .label { font-size: 0.85rem; color: #64748B; font-weight: 800; letter-spacing: 1px; margin-bottom: 4px;}
+  .result .value { font-size: 3.5rem; font-weight: 800; color: #059669; margin: 0; letter-spacing: -1px; line-height: 1;}
+  .result .detail { font-size: 1rem; color: #64748B; font-weight: 600; margin-top: 6px;}
 
   /* BOTÃO ADICIONAR */
   .btn-adicionar {
     width: 100%;
-    padding: 24px;
-    background: #059669; /* Verde Esmeralda */
+    padding: 22px;
+    background: #059669; 
     color: #fff;
     border: none;
     border-radius: 20px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 800;
     cursor: pointer;
     transition: all 0.2s;
@@ -262,10 +263,10 @@
   }
   .btn-adicionar:active { background: #047857; transform: scale(0.98); }
 
-  /* CARRINHO (LADO DIREITO) */
+  /* CARRINHO */
   .header-carrinho {
     background: #FFFFFF;
-    padding: 24px;
+    padding: 20px 24px;
     border-bottom: 2px solid #F1F5F9;
     display: flex;
     justify-content: space-between;
@@ -273,21 +274,19 @@
     flex-shrink: 0;
     border-radius: 24px 24px 0 0;
   }
-  .header-carrinho h2 { font-size: 1.4rem; font-weight: 800; color: #1E293B; display: flex; align-items: center; gap: 8px; }
+  .header-carrinho h2 { font-size: 1.3rem; font-weight: 800; color: #1E293B; }
   .btn-limpar {
-    background: #F1F5F9; /* Cinza */
-    color: #64748B; /* Cinza escuro */
+    background: #F1F5F9; 
+    color: #64748B; 
     border: none;
-    padding: 12px 20px;
-    border-radius: 12px;
+    padding: 10px 16px;
+    border-radius: 10px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.2s;
   }
-  .btn-limpar:active { background: #E2E8F0; color: #334155; }
 
-  /* LISTA DE ITENS - AQUI ROLA */
+  /* LISTA DE ITENS */
   .lista-itens {
     flex: 1; 
     overflow-y: auto; 
@@ -302,56 +301,69 @@
     justify-content: space-between;
     align-items: center;
     background: #FFFFFF;
-    padding: 20px;
+    padding: 16px;
     margin-bottom: 12px;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     border: 1px solid #E2E8F0;
   }
   .item-lista .info { flex: 1; }
-  .item-lista .nome { font-size: 1.2rem; font-weight: 700; color: #1E293B; margin-bottom: 6px;}
-  .item-lista .qtd { font-size: 1rem; color: #64748B; font-weight: 700; background: #F1F5F9; display: inline-block; padding: 4px 10px; border-radius: 8px; }
-  .item-lista .valor { font-size: 1.4rem; font-weight: 800; color: #059669; margin: 0 16px; }
+  .item-lista .nome { font-size: 1.1rem; font-weight: 700; color: #1E293B; margin-bottom: 4px;}
+  .item-lista .qtd { font-size: 0.9rem; color: #64748B; font-weight: 700; background: #F1F5F9; display: inline-block; padding: 4px 10px; border-radius: 8px; }
+  .item-lista .valor { font-size: 1.3rem; font-weight: 800; color: #059669; margin: 0 16px; }
   
   .btn-remover {
     background: #FEE2E2;
     border: none;
     color: #DC2626;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: all 0.2s;
   }
-  .btn-remover:active { background: #FCA5A5; transform: scale(0.95); }
 
-  /* RODAPÉ COM O TOTAL FIXO E INVIOLÁVEL */
+  /* =========================================
+     RODAPÉ COM O TOTAL FIXO, GRANDE E ELEVADO 
+     ========================================= */
   .footer-total {
     background: #FFFFFF;
-    padding: 20px 24px 24px 24px;
+    /* O padding-bottom de 40px eleva o botão para não ficar atrás da barra do tablet */
+    padding: 16px 20px 45px 20px; 
     border-top: 2px solid #F1F5F9;
     flex-shrink: 0; 
     border-radius: 0 0 24px 24px;
     z-index: 10;
   }
   .total-geral {
-    background: #059669; /* Verde Sólido */
+    background: #059669; 
     color: #fff;
-    border-radius: 20px;
-    padding: 24px 30px;
+    border-radius: 24px; /* Bordas bem arredondadas */
+    padding: 32px 28px; /* Botão GIGANTE */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 10px 25px rgba(5, 150, 105, 0.2);
+    box-shadow: 0 12px 25px rgba(5, 150, 105, 0.35);
   }
-  .total-geral span { font-size: 1.4rem; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px;}
-  .total-geral .valor { font-size: 3.2rem; font-weight: 800; letter-spacing: -1px; opacity: 1;}
+  .total-geral span { 
+    font-size: 1.3rem; 
+    font-weight: 800; 
+    opacity: 0.9; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+  }
+  .total-geral .valor { 
+    font-size: 3.8rem; /* Fonte GIGANTE */
+    font-weight: 800; 
+    letter-spacing: -1.5px; 
+    opacity: 1;
+    line-height: 1;
+  }
 
   /* ESTADO VAZIO */
   .carrinho-vazio {
@@ -360,16 +372,18 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: #94A3B8; /* Cinza */
+    color: #94A3B8; 
   }
   .carrinho-vazio .icone { font-size: 4.5rem; margin-bottom: 16px; opacity: 0.5; }
-  .carrinho-vazio p { font-size: 1.3rem; font-weight: 600; }
+  .carrinho-vazio p { font-size: 1.2rem; font-weight: 600; }
 
   /* RESPONSIVIDADE */
   @media (max-width: 900px) {
     .app-container { flex-direction: column; }
     .col-esquerda { flex: 1; min-height: 55vh; }
     .col-direita { flex: 1; min-height: 45vh; }
+    /* No celular deitado o botão ainda sobe mais */
+    .footer-total { padding-bottom: 60px; } 
   }
 </style>
 </head>
@@ -421,7 +435,7 @@
 
     <div class="lista-itens" id="listaItens"></div>
 
-    <!-- TOTAL FIXO NO RODAPÉ -->
+    <!-- TOTAL FIXO E ELEVADO -->
     <div class="footer-total">
       <div class="total-geral">
         <span>Total</span>
@@ -465,7 +479,7 @@
   let carrinho = [];
   let quantidadeAtual = 0;
   let valoresRoleta = [];
-  const ITEM_HEIGHT = 50; // Altura atualizada do item da roleta
+  const ITEM_HEIGHT = 46; // Altura do item da roleta
 
   function norm(txt) {
     return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
